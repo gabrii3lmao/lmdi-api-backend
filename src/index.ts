@@ -6,6 +6,7 @@ import "dotenv/config";
 import cors from "cors";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import path from "node:path";
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -16,6 +17,7 @@ app.use(
     credentials: true,
   }),
 );
+app.use("/uploads", express.static(path.resolve(__dirname, "..", "uploads")));
 app.use(Router);
 
 async function startServer() {
