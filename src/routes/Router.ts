@@ -2,10 +2,12 @@ import express from "express";
 
 import authRouter from "./authRoutes.js";
 import uploadRouter from "./uploadRoutes.js";
+import classRouter from "./classRoutes.js";
 
-const Router = express.Router();
+const router = express.Router();
 
-Router.use("/auth", authRouter);
-Router.use(uploadRouter);
+router.use("/auth", authRouter);
+router.use("/exams", uploadRouter);
+router.use("/classes", classRouter);
 
-export default Router;
+export default router;

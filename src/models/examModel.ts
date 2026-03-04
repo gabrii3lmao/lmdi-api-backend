@@ -6,6 +6,7 @@ interface IExam extends Document {
   questionsCount: number;
   choicesCount: number;
   answerKey: string[];
+  teacherId: Schema.Types.ObjectId;
 }
 
 const examSchema = new mongoose.Schema<IExam>(
@@ -15,6 +16,7 @@ const examSchema = new mongoose.Schema<IExam>(
     questionsCount: Number,
     choicesCount: Number,
     answerKey: [String],
+    teacherId: {type: Schema.Types.ObjectId, ref: "User", required: true},
   },
   { timestamps: true },
 );

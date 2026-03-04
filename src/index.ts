@@ -1,5 +1,4 @@
 import express from "express";
-const app = express();
 import Router from "./routes/Router.js";
 import mongoose from "mongoose";
 import "dotenv/config";
@@ -7,6 +6,9 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
+const app = express();
+
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -17,6 +19,8 @@ app.use(
     credentials: true,
   }),
 );
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 app.use("/uploads", express.static(path.resolve(__dirname, "..", "uploads")));
 app.use(Router);
 

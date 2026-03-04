@@ -1,5 +1,12 @@
 import mongoose, { Schema, model, Document } from "mongoose";
 
+interface ISubmissionDetail {
+  question: number;
+  marked: string | null;
+  correct: string;
+  status: "correct" | "incorrect" | "invalid";
+}
+
 interface ISubmission extends Document {
   examId: Schema.Types.ObjectId;
   studentName: string;
@@ -7,15 +14,7 @@ interface ISubmission extends Document {
   score: number;
   totalCorrect: number;
   status: "pending" | "success" | "error";
-
-  details: [
-    {
-      question: Number;
-      marked: string;
-      correct: string;
-      status: "correct" | "incorrect" | "invalid";
-    },
-  ];
+  details: ISubmissionDetail[];
 }
 
 const submissionSchema = new mongoose.Schema<ISubmission>(
@@ -34,10 +33,13 @@ const submissionSchema = new mongoose.Schema<ISubmission>(
 
     details: [
       {
-        question: Number,
-        marked: String,
-        correct: String,
-        status: String,
+        question: { type: Number },
+        marked: { type: String },
+        correct: { type: String },
+        status: {
+          type: String,
+          enum: ["correct", "incorrect", "invalid"],
+        },
       },
     ],
   },

@@ -49,15 +49,6 @@ export class UserController {
     }
   }
 
-  static async getUsers(req: Request, res: Response) {
-    try {
-      const users = await User.find({});
-      res.status(200).json(users);
-    } catch (err) {
-      return res.status(500).json({ error: "Failed to fetch users" });
-    }
-  }
-
   static async logout(req: Request, res: Response) {
     try {
       res.cookie("token", "", { maxAge: 0 });

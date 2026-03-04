@@ -75,11 +75,3 @@ Se uma questão não estiver marcada, ou tiver dupla marcação, use null como v
   return resultados;
 }
 
-const paths = [
-  "/home/gabrii3l/Coding/projetos/LMDI-true/backend/src/services/imgs/aluno.jpg",
-  "/home/gabrii3l/Coding/projetos/LMDI-true/backend/src/services/imgs/aluno2.png",
-  "/home/gabrii3l/Coding/projetos/LMDI-true/backend/src/services/imgs/aluno3.png",
-  "/home/gabrii3l/Coding/projetos/LMDI-true/backend/src/services/imgs/aluno4.png",
-];
-const response = await processarGabaritos(paths);
-console.log(response);

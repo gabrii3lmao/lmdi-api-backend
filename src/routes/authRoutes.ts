@@ -1,7 +1,5 @@
 import express, { type Request, type Response } from "express";
 import { UserController } from "../controllers/userController.js";
-import authMiddleware from "../middlewares/authMiddleware.js";
-import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
 import User from "../models/userModel.js";
@@ -11,7 +9,6 @@ const authRouter = express.Router();
 authRouter.post("/signup", UserController.register);
 authRouter.post("/signin", UserController.login);
 authRouter.post("/signout", UserController.logout);
-authRouter.get("/users", authMiddleware, UserController.getUsers);
 
 authRouter.post("/forgot-password", async (req: Request, res: Response) => {
   try {
