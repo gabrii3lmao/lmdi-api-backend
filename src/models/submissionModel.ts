@@ -7,9 +7,10 @@ interface ISubmissionDetail {
   status: "correct" | "incorrect" | "invalid";
 }
 
-interface ISubmission extends Document {
+export interface ISubmission extends Document {
   examId: Schema.Types.ObjectId;
   studentName: string;
+  classId: Schema.Types.ObjectId;
   imageUrl: string;
   score: number;
   totalCorrect: number;
@@ -20,6 +21,7 @@ interface ISubmission extends Document {
 const submissionSchema = new mongoose.Schema<ISubmission>(
   {
     examId: { type: Schema.Types.ObjectId, ref: "Exam", required: true },
+    classId: { type: Schema.Types.ObjectId, ref: "Class", required: true },
     studentName: { type: String, required: true },
     imageUrl: { type: String },
 

@@ -1,7 +1,8 @@
 import type { Request, Response } from "express";
-import Submission from "../models/submissionModel.js";
+import Submission, { type ISubmission } from "../models/submissionModel.js";
 import Exam from "../models/examModel.js";
 import { processarGabaritos } from "../services/templateService.js";
+import { gradeExam } from "../services/examService.js";
 
 interface AuthRequest extends Request {
   user?: { id: string };
@@ -39,6 +40,7 @@ export class TemplateController {
         files.map((file) =>
           Submission.create({
             examId,
+            classId: exam.classId,
             studentName: file.originalname.split(".")[0],
             imageUrl: file.path,
             status: "pending",
@@ -50,37 +52,23 @@ export class TemplateController {
       const resultadosIA = await processarGabaritos(caminhos);
 
       for (let i = 0; i < submissoes.length; i++) {
-        const sub = submissoes[i];
-        const marcacoesAluno = resultadosIA[i];
+        const sub: ISubmission = submissoes[i];
+        const marcacoesAluno = resultadosIA[i] || null;
 
         if (!marcacoesAluno || Object.keys(marcacoesAluno).length === 0) {
           sub.status = "error";
-          await sub.save();
-          continue;
+        } else {
+          const result = gradeExam(
+            exam.answerKey,
+            marcacoesAluno,
+            exam.questionsCount,
+          );
+
+          sub.totalCorrect = result.totalCorrect;
+          sub.score = result.score;
+          sub.details = result.details;
+          sub.status = "success";
         }
-
-        let acertos = 0;
-        const detalhes: any[] = [];
-
-        exam.answerKey.forEach((respostaCorreta: string, index: number) => {
-          const questaoNum = (index + 1).toString();
-          const marcada = marcacoesAluno[questaoNum] ?? null;
-          const eCorreto = marcada === respostaCorreta;
-
-          if (eCorreto) acertos++;
-
-          detalhes.push({
-            question: index + 1,
-            marked: marcada,
-            correct: respostaCorreta,
-            status: eCorreto ? "correct" : "incorrect",
-          });
-        });
-
-        sub.totalCorrect = acertos;
-        sub.score = (acertos / exam.questionsCount) * 10;
-        sub.details = detalhes;
-        sub.status = "success";
 
         await sub.save();
       }

@@ -37,7 +37,7 @@ Se uma questão não estiver marcada, ou tiver dupla marcação, use null como v
       const mimeType = detectarMimeType(caminho);
 
       const result = await genAI.models.generateContent({
-        model: "gemini-3-flash-preview",
+        model: "gemini-2.5-flash",
         contents: [
           {
             role: "user",
