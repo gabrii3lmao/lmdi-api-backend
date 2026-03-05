@@ -1,5 +1,8 @@
 import type { Request, Response } from "express";
 import Class from "../models/classModel.js";
+import Submission from "../models/submissionModel.js";
+import { deleteFiles } from "../config/multer.js";
+import Exam from "../models/examModel.js";
 
 interface AuthRequest extends Request {
   user?: { id: string };
@@ -31,7 +34,7 @@ export default class ClassController {
         return res.status(400).json({ error: "O nome é obrigatório" });
       }
 
-      const classe = await Class.create({ name, teacherId });
+      const classe = await Class.create({ name: name, teacherId: teacherId });
 
       return res.status(201).json({
         message: "Turma criada com sucesso",
@@ -99,8 +102,16 @@ export default class ClassController {
         return res.status(403).json({ error: "Não autorizado" });
       }
 
-      await Class.findByIdAndDelete(id);
+      const classSubmissions = await Submission.find({ classId: id });
+      const imagesPaths = classSubmissions.map((f) => f.imageUrl);
 
+      await Class.findByIdAndDelete(id);
+      await Submission.deleteMany({ classId: id });
+      await Exam.deleteOne({ classId: id });
+
+      deleteFiles(imagesPaths).catch((err) =>
+        console.error("Erro ao limpar arquivos da turma deletada:", err),
+      );
       return res.status(200).json({
         message: "Turma deletada com sucesso",
       });

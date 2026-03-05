@@ -6,7 +6,6 @@ const classRouter = Router();
 
 classRouter.get("/", authMiddleware, ClassController.getClasses);
 classRouter.post("/", authMiddleware, ClassController.create);
-
 classRouter.put("/:id", authMiddleware, ClassController.update);
 classRouter.delete("/:id", authMiddleware, ClassController.delete);
 

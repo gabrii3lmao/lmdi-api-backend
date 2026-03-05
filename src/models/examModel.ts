@@ -2,11 +2,11 @@ import mongoose, { Document, Schema, model } from "mongoose";
 
 interface IExam extends Document {
   title: string;
-  classId: Schema.Types.ObjectId;
+  classId: Schema.Types.ObjectId | string;
   questionsCount: number;
   choicesCount: number;
   answerKey: string[];
-  teacherId: Schema.Types.ObjectId;
+  teacherId: Schema.Types.ObjectId | string;
 }
 
 const examSchema = new mongoose.Schema<IExam>(

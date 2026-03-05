@@ -31,4 +31,5 @@ uploadRouter.post(
   TemplateController.cadastroAluno,
 );
 
+
 export default uploadRouter;
