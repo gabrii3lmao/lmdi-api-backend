@@ -6,6 +6,18 @@ interface AuthRequest extends Request {
 }
 
 export default class ClassController {
+  static async getClasses(req: AuthRequest, res: Response) {
+    try {
+      const userId = req.user?.id;
+      const classes = await Class.find({ teacherId: userId });
+
+      res.status(200).json(classes);
+    } catch (error) {
+      console.error("Erro ao listar turma:", error);
+      return res.status(500).json({ error: "Erro interno no servidor" });
+    }
+  }
+
   static async create(req: AuthRequest, res: Response) {
     try {
       const { name } = req.body;

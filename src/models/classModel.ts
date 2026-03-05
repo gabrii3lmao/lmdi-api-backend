@@ -2,7 +2,7 @@ import mongoose, { Document, Schema, model } from "mongoose";
 
 interface IClass extends Document {
   name: string;
-  teacherId: Schema.Types.ObjectId;
+  teacherId: Schema.Types.ObjectId | undefined;
 }
 
 const classSchema = new mongoose.Schema<IClass>(

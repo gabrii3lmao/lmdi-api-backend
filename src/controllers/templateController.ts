@@ -36,6 +36,8 @@ export class TemplateController {
         return res.status(403).json({ error: "Exame não encontrado" });
       }
 
+      const caminhos = files.map((f) => f.path);
+      const resultadosIA = await processarGabaritos(caminhos);
       const submissoes = await Promise.all(
         files.map((file) =>
           Submission.create({
@@ -47,9 +49,6 @@ export class TemplateController {
           }),
         ),
       );
-
-      const caminhos = files.map((f) => f.path);
-      const resultadosIA = await processarGabaritos(caminhos);
 
       for (let i = 0; i < submissoes.length; i++) {
         const sub: ISubmission = submissoes[i];
@@ -115,6 +114,42 @@ export class TemplateController {
     } catch (error) {
       console.error("Erro ao criar gabarito:", error);
       return res.status(500).json({ error: "Erro ao criar gabarito" });
+    }
+  }
+
+  static async listarSubmissoes(req: Request, res: Response) {
+    try {
+      const { classId } = req.body;
+      const submissoes = await Submission.find({ classId });
+      return res.status(200).json(submissoes);
+    } catch (error) {
+      console.log(`Erro ao listar gabaritos`, error);
+      return res
+        .status(500)
+        .json({ error: "There was an error trying to get all submissions" });
+    }
+  }
+
+  static async listarSubmissao(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const { classId } = req.body;
+
+      const submission = await Submission.findOne({
+        _id: id,
+        classId: classId,
+      });
+
+      if (!submission) {
+        return res.status(404).json({ error: "Essa submissão não existe" });
+      }
+
+      return res.status(200).json(submission);
+    } catch (error) {
+      console.log(`Erro ao lista submissão`, error);
+      return res
+        .status(500)
+        .json({ error: "There was an error trying to get the submission" });
     }
   }
 }

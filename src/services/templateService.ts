@@ -66,6 +66,7 @@ Se uma questão não estiver marcada, ou tiver dupla marcação, use null como v
       if (caminhos.length > 1) {
         await new Promise((resolve) => setTimeout(resolve, 1500));
       }
+      
     } catch (error) {
       console.error(`Erro ao processar ${caminho}:`, error);
       resultados.push({} as any);
