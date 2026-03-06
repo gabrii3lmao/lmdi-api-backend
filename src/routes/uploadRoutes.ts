@@ -4,14 +4,8 @@ import { TemplateController } from "../controllers/templateController.js";
 import authMiddleware from "../middlewares/authMiddleware.js";
 
 const uploadRouter = Router();
-// Rota 1: Criar gabarito mestre
-uploadRouter.post(
-  "/create-exam",
-  authMiddleware,
-  TemplateController.cadastrarGabaritoMestre,
-);
 
-// rota 2: listar e criar gabarito dos alunos
+// Rotas GET
 uploadRouter.get(
   "/submission",
   authMiddleware,
@@ -24,6 +18,13 @@ uploadRouter.get(
   TemplateController.listarSubmissao,
 );
 
+// rota POST
+uploadRouter.post(
+  "/create-exam",
+  authMiddleware,
+  TemplateController.cadastrarGabaritoMestre,
+);
+
 uploadRouter.post(
   "/submission",
   authMiddleware,
@@ -31,5 +32,10 @@ uploadRouter.post(
   TemplateController.cadastroAluno,
 );
 
+uploadRouter.get(
+  "/:id",
+  authMiddleware,
+  TemplateController.listarGabaritosMestre,
+);
 
 export default uploadRouter;

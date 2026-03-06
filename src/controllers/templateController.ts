@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { Request, RequestHandler, Response } from "express";
 import Submission, { type ISubmission } from "../models/submissionModel.js";
 import Exam from "../models/examModel.js";
 import { processarGabaritos } from "../services/templateService.js";
@@ -119,11 +119,15 @@ export class TemplateController {
 
   static async listarSubmissoes(req: Request, res: Response) {
     try {
-      const { classId } = req.body;
-      const submissoes = await Submission.find({ classId });
+      const { examId } = req.query;
+
+      if (!examId)
+        return res.status(400).json({ error: "examId é necessário" });
+
+      const submissoes = await Submission.find({ examId });
       return res.status(200).json(submissoes);
     } catch (error) {
-      console.log(`Erro ao listar gabaritos`, error);
+      console.log(`Erro ao listar submissões`, error);
       return res
         .status(500)
         .json({ error: "There was an error trying to get all submissions" });
@@ -150,6 +154,20 @@ export class TemplateController {
       return res
         .status(500)
         .json({ error: "There was an error trying to get the submission" });
+    }
+  }
+
+  static async listarGabaritosMestre(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const gabaritosMestre = await Exam.find({ classId: id });
+
+      return res.status(200).json(gabaritosMestre);
+    } catch (error) {
+      console.log(`Erro ao lista submissão`, error);
+      return res.status(500).json({
+        error: "There was an error trying to get the master template",
+      });
     }
   }
 }
