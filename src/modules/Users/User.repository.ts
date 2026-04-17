@@ -1,0 +1,39 @@
+import mongoose from "mongoose";
+import User, { type IUser } from "../../models/userModel.js";
+import type { RegisterUserType } from "./dto/userTypes.js";
+
+export class UserRepository {
+  async create(userData: RegisterUserType): Promise<mongoose.Document> {
+    return await User.create(userData);
+  }
+
+  async findByEmail(email: string): Promise<IUser | null> {
+    return await User.findOne({
+      email,
+    });
+  }
+
+  async setPasswordResetToken(email: string, token: string, expires: number) {
+    return await User.findOneAndUpdate(
+      { email },
+      { resetPasswordToken: token, resetPasswordExpires: expires },
+      { new: true },
+    );
+  }
+
+  async resetPasswordByToken(token: string, newPassword: string) {
+    const user = await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+
+    if (!user) return null;
+
+    user.password = newPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+
+    await user.save();
+    return user;
+  }
+}

@@ -1,6 +1,6 @@
 import express from "express";
 
-import authRouter from "./authRoutes.js";
+import authRouter from "../modules/Users/User.routes.js";
 import uploadRouter from "./uploadRoutes.js";
 import classRouter from "./classRoutes.js";
 

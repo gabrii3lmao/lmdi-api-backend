@@ -1,7 +1,7 @@
-import mongoose, { Schema, model, Document } from "mongoose";
+import mongoose, { Document } from "mongoose";
 import bcrypt from "bcrypt";
 
-interface IUser extends Document {
+export interface IUser extends Document {
   name: string;
   email: string;
   password?: string | Promise<string>;
@@ -55,7 +55,6 @@ userSchema.pre("save", async function (next) {
 
 userSchema.methods.isValidPassword = async function (password: string) {
   try {
-    // compara a senha passada no parâmetro com a senha hasheada
     return await bcrypt.compare(password, this.password);
   } catch (error) {
     throw new Error("Password comparison failed");
