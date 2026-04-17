@@ -107,7 +107,7 @@ export default class ClassController {
 
       await Class.findByIdAndDelete(id);
       await Submission.deleteMany({ classId: id });
-      await Exam.deleteOne({ classId: id });
+      await Exam.deleteMany({ classId: id });
 
       deleteFiles(imagesPaths).catch((err) =>
         console.error("Erro ao limpar arquivos da turma deletada:", err),
