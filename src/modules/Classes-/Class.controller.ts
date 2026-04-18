@@ -55,7 +55,6 @@ export class ClassController {
 
       const classData = classValidationSchema.parse(req.body);
 
-      // Passamos o teacherId para o Service validar se a turma pertence a ele
       const updatedClass = await this._classService.updateClass(
         id as string,
         classData,

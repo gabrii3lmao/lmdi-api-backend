@@ -1,4 +1,4 @@
-import Submission, { type ISubmission } from "../../models/submissionModel.js";
+import Submission, { type ISubmission } from "./Submission.model.js";
 
 export class SubmissionRepository {
   async create(submissionData: Partial<ISubmission>): Promise<ISubmission> {
@@ -6,14 +6,12 @@ export class SubmissionRepository {
   }
 
   async updateStatusAndScore(
-    submissionId: string, 
-    updateData: Partial<ISubmission>
+    submissionId: string,
+    updateData: Partial<ISubmission>,
   ): Promise<ISubmission | null> {
-    return await Submission.findByIdAndUpdate(
-      submissionId, 
-      updateData, 
-      { new: true } 
-    );
+    return await Submission.findByIdAndUpdate(submissionId, updateData, {
+      new: true,
+    });
   }
 
   async findByExamId(examId: string) {
@@ -30,5 +28,4 @@ export class SubmissionRepository {
   async findByClass(classId: string) {
     return await Submission.find({ classId });
   }
-
 }

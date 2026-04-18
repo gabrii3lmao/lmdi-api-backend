@@ -1,4 +1,4 @@
-import Exam, { type IExam } from "../../models/examModel.js";
+import Exam, { type IExam } from "./Exam.model.js";
 
 export class ExamRepository {
   async create(examData: Partial<IExam>): Promise<IExam> {

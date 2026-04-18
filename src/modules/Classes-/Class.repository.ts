@@ -1,6 +1,6 @@
 import Class, { type IClass } from "./classModel.js";
-import Submission from "../../models/submissionModel.js";
-import Exam from "../../models/examModel.js";
+import Submission from "../Submission/Submission.model.js";
+import Exam from "../Exams/Exam.model.js";
 
 export class ClassRepository {
   async create(classData: Partial<IClass>): Promise<IClass> {
