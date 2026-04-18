@@ -21,7 +21,6 @@ export class SubmissionService {
     }
 
     const filePaths = files.map((f) => f.path);
-
     const pendingSubmissions = await Promise.all(
       files.map((file) =>
         this._submissionRepo.create({
@@ -65,8 +64,8 @@ export class SubmissionService {
         submission._id.toString(),
         updateData,
       );
-
-      finalResults.push(updatedSubmission);
+      const plainObject = JSON.parse(JSON.stringify(updatedSubmission));
+      finalResults.push(plainObject);
     }
 
     return finalResults;

@@ -2,7 +2,6 @@ import type { Request, Response } from "express";
 import { ClassService } from "./Class.service.js";
 import { classValidationSchema } from "./dto/create-class.js";
 import { ZodError } from "zod";
-import { deleteFiles } from "../../config/multer.js";
 
 interface AuthRequest extends Request {
   user?: { id: string };
@@ -78,10 +77,6 @@ export class ClassController {
 
       
       const imagesToClean = await this._classService.deleteClass(id as string, teacherId);
-
-      deleteFiles(imagesToClean).catch((err) =>
-        console.error("Erro ao limpar arquivos da turma deletada:", err),
-      );
 
       return res.status(200).json({ message: "Turma deletada com sucesso" });
     } catch (error: any) {
