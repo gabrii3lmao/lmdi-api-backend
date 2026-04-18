@@ -1,6 +1,6 @@
 import mongoose, { Document, Schema, model } from "mongoose";
 
-interface IExam extends Document {
+export interface IExam extends Document {
   title: string;
   classId: Schema.Types.ObjectId | string;
   questionsCount: number;

@@ -2,7 +2,7 @@ import type { Request, RequestHandler, Response } from "express";
 import Submission, { type ISubmission } from "../models/submissionModel.js";
 import Exam from "../models/examModel.js";
 import { processarGabaritos } from "../services/templateService.js";
-import { gradeExam } from "../services/examService.js";
+import { gradeExam } from "../modules/Exams/Grade.service.js";
 
 interface AuthRequest extends Request {
   user?: { id: string };

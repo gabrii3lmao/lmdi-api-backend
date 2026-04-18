@@ -1,6 +1,6 @@
-import mongoose, { Document, Schema, model } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
-interface IClass extends Document {
+export interface IClass extends Document {
   name: string;
   teacherId: string | Schema.Types.ObjectId;
 }

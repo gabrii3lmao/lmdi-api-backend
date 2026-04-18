@@ -16,10 +16,22 @@ export class EmailService {
 
   async sendPasswordResetEmail(to: string, token: string) {
     const mailOptions = {
-      from: "no-reply@teste.com",
+      from: '"Suporte LetMeDoIt" <no-reply@letmedoit.com>',
       to,
       subject: "Recuperação de Senha",
-      text: `Você solicitou a alteração de senha. Use o link para alterar a sua senha: \n\n http://localhost:5173/reset-password/${token}`,
+      text: `Olá! 
+
+Recebemos uma solicitação para redefinir a senha da sua conta no LetMeDoIt.
+
+Para prosseguir com a alteração, clique no link abaixo (ou cole no seu navegador):
+http://localhost:5173/reset-password/${token}
+
+Este link é válido por apenas 1 hora.
+
+Se você não solicitou essa alteração, por favor, ignore este e-mail. Sua senha permanecerá a mesma e nenhuma ação é necessária.
+
+Atenciosamente,
+Equipe LetMeDoIt`,
     };
 
     await this.transporter.sendMail(mailOptions);

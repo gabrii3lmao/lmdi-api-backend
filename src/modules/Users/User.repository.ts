@@ -1,9 +1,8 @@
-import mongoose from "mongoose";
-import User, { type IUser } from "../../models/userModel.js";
+import User, { type IUser } from "./userModel.js";
 import type { RegisterUserType } from "./dto/userTypes.js";
 
 export class UserRepository {
-  async create(userData: RegisterUserType): Promise<mongoose.Document> {
+  async create(userData: RegisterUserType): Promise<IUser> {
     return await User.create(userData);
   }
 

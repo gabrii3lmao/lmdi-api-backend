@@ -44,30 +44,9 @@ export class UserController {
     return res.json({ message: "Logout realizado com sucesso" });
   };
 
-  private handleError(res: Response, error: any) {
-    if (error instanceof ZodError) {
-      return res.status(400).json({
-        error: "Dados inválidos",
-        details: error.format(),
-      });
-    }
-
-    if (
-      error.message.includes("Invalid credentials") ||
-      error.message.includes("not found")
-    ) {
-      return res.status(401).json({ error: "E-mail ou senha incorretos" });
-    }
-
-    console.error(error);
-    return res.status(500).json({ error: "Erro interno no servidor" });
-  }
-
   forgotPassword = async (req: Request, res: Response) => {
     try {
       const { email } = req.body;
-
-      // Opcional: Validar se 'email' é um e-mail válido usando Zod aqui
 
       await this._userService.forgotPassword(email);
 
@@ -96,4 +75,23 @@ export class UserController {
       return this.handleError(res, error);
     }
   };
+
+  private handleError(res: Response, error: any) {
+    if (error instanceof ZodError) {
+      return res.status(400).json({
+        error: "Dados inválidos",
+        details: error.format(),
+      });
+    }
+
+    if (
+      error.message.includes("Invalid credentials") ||
+      error.message.includes("not found")
+    ) {
+      return res.status(401).json({ error: "E-mail ou senha incorretos" });
+    }
+
+    console.error(error);
+    return res.status(500).json({ error: "Erro interno no servidor" });
+  }
 }

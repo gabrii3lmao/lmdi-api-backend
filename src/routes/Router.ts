@@ -2,7 +2,7 @@ import express from "express";
 
 import authRouter from "../modules/Users/User.routes.js";
 import uploadRouter from "./uploadRoutes.js";
-import classRouter from "./classRoutes.js";
+import classRouter from "../modules/Classes-/Class.routes.js";
 
 const router = express.Router();
 
