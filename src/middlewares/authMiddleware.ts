@@ -10,7 +10,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
   try {
     const decoded = verifyToken(token);
 
-    req.user = decoded;
+    req.user = decoded as { id: string };
     return next();
   } catch (error) {
     return res.status(401).json({ message: "Invalid or expired token" });
