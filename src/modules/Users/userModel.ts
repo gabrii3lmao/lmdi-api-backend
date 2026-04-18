@@ -43,13 +43,13 @@ const userSchema = new mongoose.Schema<IUser>(
 userSchema.pre("save", async function (next) {
   try {
     // vê se a senha foi modificada
-    if (!this.isModified("password")) return;
+    if (!this.isModified("password") || !this.password) return;
 
     // gera um salt e faz um hash sobre a senha
     const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    this.password = await bcrypt.hash(this.password as string, salt);
   } catch (error: any) {
-    next(error);
+    throw error;
   }
 });
 
