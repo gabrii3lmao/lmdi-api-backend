@@ -24,7 +24,7 @@ export class EmailService {
 Recebemos uma solicitação para redefinir a senha da sua conta no LetMeDoIt.
 
 Para prosseguir com a alteração, clique no link abaixo (ou cole no seu navegador):
-http://localhost:5173/reset-password/${token}
+    ${process.env.FRONTEND_URL}/reset-password/${token}
 
 Este link é válido por apenas 1 hora.
 

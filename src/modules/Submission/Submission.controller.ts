@@ -39,7 +39,7 @@ export class SubmissionController {
 
   getAllSubmissions = async (req: AuthRequest, res: Response) => {
     try {
-      const examId  = z.string().parse(req.query);
+      const examId  = z.string().parse(req.query.examId);
       if (!examId)
         return res.status(400).json({ error: "examId é obrigatório" });
 
