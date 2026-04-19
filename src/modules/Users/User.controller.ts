@@ -80,7 +80,7 @@ export class UserController {
     if (error instanceof ZodError) {
       return res.status(400).json({
         error: "Dados inválidos",
-        details: error.format(),
+        details: error.format,
       });
     }
 
@@ -89,6 +89,9 @@ export class UserController {
       error.message.includes("not found")
     ) {
       return res.status(401).json({ error: "E-mail ou senha incorretos" });
+    }
+    if (error.message.includes("Email already in use")) {
+      return res.status(409).json({ error: "E-mail já em uso" });
     }
 
     console.error(error);
