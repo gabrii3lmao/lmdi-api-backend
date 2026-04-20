@@ -52,7 +52,7 @@ export class UserController {
 
       return res.status(200).json({ message: "Email de recuperação enviado!" });
     } catch (error: any) {
-      // Se não encontrou, mandamos 404 (ou 200 dependendo da sua política de segurança)
+  
       if (error.message === "Email not found") {
         return res.status(404).json({ error: "E-mail não encontrado." });
       }

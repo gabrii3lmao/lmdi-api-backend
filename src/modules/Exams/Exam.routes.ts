@@ -14,7 +14,8 @@ const examController = new ExamController(examService);
 examRouter.use(authMiddleware);
 
 examRouter.post("/", examController.create);
-
+examRouter.put("/:examId", examController.update);
+examRouter.delete("/:examId", examController.delete);
 examRouter.get("/class/:classId", examController.listByClass);
 
 export default examRouter;

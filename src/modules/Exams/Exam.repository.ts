@@ -5,6 +5,17 @@ export class ExamRepository {
     return await Exam.create(examData);
   }
 
+  async update(
+    examId: string,
+    updateData: Partial<IExam>,
+  ): Promise<IExam | null> {
+    return await Exam.findByIdAndUpdate(examId, updateData, { new: true });
+  }
+
+  async delete(examId: string): Promise<void> {
+    await Exam.findByIdAndDelete(examId);
+  }
+
   async findByIdAndTeacher(examId: string, teacherId: string) {
     return await Exam.findOne({
       _id: examId,
