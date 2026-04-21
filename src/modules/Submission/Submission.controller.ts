@@ -39,7 +39,7 @@ export class SubmissionController {
 
   getAllSubmissions = async (req: AuthRequest, res: Response) => {
     try {
-      const examId  = z.string().parse(req.query.examId);
+      const examId = z.string().parse(req.query.examId);
       if (!examId)
         return res.status(400).json({ error: "examId é obrigatório" });
 
@@ -49,6 +49,24 @@ export class SubmissionController {
       return res.status(200).json(submissions);
     } catch (error) {
       return res.status(500).json({ error: "Erro ao listar submissões" });
+    }
+  };
+
+  getSubmissionsByClass = async (req: AuthRequest, res: Response) => {
+    try {
+      const classId = z.string().parse(req.params.classId);
+      if (!classId)
+        return res.status(400).json({ error: "classId é obrigatório" });
+
+      const submissions = await this._submissionService.getSubmissionsByClass(
+        classId as string,
+      );
+
+      return res.status(200).json(submissions);
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ error: "Erro ao listar submissões por turma" });
     }
   };
 }

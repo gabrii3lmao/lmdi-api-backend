@@ -18,5 +18,6 @@ submissionRouter.use(authMiddleware);
 submissionRouter.post("/", upload.array("files"), submissionController.createSubmission);
 
 submissionRouter.get("/", submissionController.getAllSubmissions);
+submissionRouter.get("/class/:classId", submissionController.getSubmissionsByClass);
 
 export default submissionRouter;
