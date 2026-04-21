@@ -25,6 +25,10 @@ export class SubmissionRepository {
     });
   }
 
+  async deleteManyByExamId(examId: string) {
+    await Submission.deleteMany({ examId });
+  }
+
   async findByClass(classId: string) {
     return await Submission.find({ classId });
   }

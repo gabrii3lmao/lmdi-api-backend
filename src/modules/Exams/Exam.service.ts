@@ -2,11 +2,13 @@ import { ExamRepository } from "./Exam.repository.js";
 import type { IExam } from "./Exam.model.js";
 import type { ExamValidationType } from "./dto/create-exam.js";
 import { ClassRepository } from "../Classes-/Class.repository.js";
+import { SubmissionRepository } from "../Submission/Submission.repository.js";
 
 export class ExamService {
   constructor(
     private readonly _examRepository: ExamRepository,
     private readonly _classRepository: ClassRepository,
+    private readonly _submissionRepository: SubmissionRepository,
   ) {}
 
   async createExam(
@@ -61,5 +63,21 @@ export class ExamService {
 
   async getExamsByClass(classId: string): Promise<IExam[]> {
     return await this._examRepository.findByClassId(classId);
+  }
+
+  async deleteCascadeByExamId(
+    examId: string,
+    teacherId: string,
+  ): Promise<void> {
+    const exam = await this._examRepository.findByIdAndTeacher(
+      examId,
+      teacherId,
+    );
+
+    if (!exam) {
+      throw new Error("EXAM_NOT_FOUND_OR_UNAUTHORIZED");
+    }
+
+    await this._submissionRepository.deleteManyByExamId(examId);
   }
 }

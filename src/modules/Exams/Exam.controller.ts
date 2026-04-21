@@ -5,6 +5,8 @@ export class ExamController {
   constructor(private readonly _examService: ExamService) {
     this.create = this.create.bind(this);
     this.listByClass = this.listByClass.bind(this);
+    this.update = this.update.bind(this);
+    this.delete = this.delete.bind(this);
   }
 
   async create(req: Request, res: Response) {
@@ -54,6 +56,10 @@ export class ExamController {
 
     try {
       const { examId } = req.params;
+      await this._examService.deleteCascadeByExamId(
+        examId as string,
+        teacherId,
+      );
       await this._examService.deleteExam(examId as string, teacherId);
       return res.status(200).json({ message: "Gabarito deletado" });
     } catch (error: any) {
