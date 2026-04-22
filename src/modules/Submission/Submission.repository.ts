@@ -32,4 +32,10 @@ export class SubmissionRepository {
   async findByClass(classId: string) {
     return await Submission.find({ classId });
   }
+
+  async getSubmissionsAnswersById(submissionId: string) {
+    const doc =  await Submission.findById(submissionId).select("details").lean();
+    if (!doc) return null;
+    return doc.details.map(d => d.marked);
+  }
 }

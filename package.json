@@ -4,11 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "vitest",
     "dev": "npx tsx watch src/index.ts",
     "build": "tsc",
     "postbuild": "cp -r src/assets dist/ 2>/dev/null || :",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "test:submissions": "vitest tests/Submissions/",
+    "test:exams": "vitest tests/Exams/",
+    "test:classes": "vitest tests/Classes/"
   },
   "keywords": [],
   "author": "",
@@ -30,6 +33,7 @@
     "multer": "^2.1.0",
     "multer-storage-cloudinary": "^4.0.0",
     "nodemailer": "^8.0.1",
+    "vitest": "^4.1.5",
     "zod": "^4.3.6"
   },
   "devDependencies": {
