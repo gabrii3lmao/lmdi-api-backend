@@ -19,5 +19,5 @@ submissionRouter.post("/", upload.array("files"), submissionController.createSub
 
 submissionRouter.get("/", submissionController.getAllSubmissions);
 submissionRouter.get("/class/:classId", submissionController.getSubmissionsByClass);
-
+submissionRouter.get("/:submissionId/answers", submissionController.getSubmissionAnswers);
 export default submissionRouter;

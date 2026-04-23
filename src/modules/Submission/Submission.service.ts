@@ -78,4 +78,8 @@ export class SubmissionService {
   async getSubmissionsByExam(examId: string) {
     return await this._submissionRepo.findByExamId(examId);
   }
+
+  async getSubmissionaAnswers(submissionId: string) {
+    return await this._submissionRepo.getSubmissionsAnswersById(submissionId)
+  }
 }

@@ -69,4 +69,26 @@ export class SubmissionController {
         .json({ error: "Erro ao listar submissões por turma" });
     }
   };
+
+  getSubmissionAnswers = async (req: AuthRequest, res: Response) => {
+    try {
+      const submissionId = z.string().parse(req.params.submissionId);
+      if (!submissionId)
+        return res.status(400).json({ error: "submissionId é obrigatório" });
+
+      const answers = await this._submissionService.getSubmissionaAnswers(
+        submissionId as string,
+      );
+
+      if (!answers) {
+        return res.status(404).json({ error: "Submissão não encontrada" });
+      }
+
+      return res.status(200).json({ answers });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ error: "Erro ao obter respostas da submissão" });
+    }
+  };
 }

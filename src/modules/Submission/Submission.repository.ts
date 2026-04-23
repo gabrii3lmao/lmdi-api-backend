@@ -36,6 +36,6 @@ export class SubmissionRepository {
   async getSubmissionsAnswersById(submissionId: string) {
     const doc =  await Submission.findById(submissionId).select("details").lean();
     if (!doc) return null;
-    return doc.details.map(d => d.marked);
+    return doc.details.map(d => d.marked); // ["A", "B", "C"]
   }
 }
