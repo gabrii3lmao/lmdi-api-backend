@@ -42,7 +42,6 @@ export class SubmissionController {
       const examId = z.string().parse(req.query.examId);
       if (!examId)
         return res.status(400).json({ error: "examId é obrigatório" });
-
       const submissions = await this._submissionService.getSubmissionsByExam(
         examId as string,
       );

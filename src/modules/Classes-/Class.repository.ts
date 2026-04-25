@@ -16,7 +16,7 @@ export class ClassRepository {
   }
 
   async update(id: string, classData: Partial<IClass>): Promise<IClass | null> {
-    return await Class.findByIdAndUpdate(id, classData, { new: true });
+    return await Class.findByIdAndUpdate(id, classData, { returnDocument: "after" });
   }
 
   async delete(id: string): Promise<IClass | null> {

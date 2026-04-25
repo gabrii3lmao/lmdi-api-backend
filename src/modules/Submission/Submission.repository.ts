@@ -10,7 +10,7 @@ export class SubmissionRepository {
     updateData: Partial<ISubmission>,
   ): Promise<ISubmission | null> {
     return await Submission.findByIdAndUpdate(submissionId, updateData, {
-      new: true,
+      returnDocument: "after",
     });
   }
 
@@ -34,8 +34,10 @@ export class SubmissionRepository {
   }
 
   async getSubmissionsAnswersById(submissionId: string) {
-    const doc =  await Submission.findById(submissionId).select("details").lean();
+    const doc = await Submission.findById(submissionId)
+      .select("details")
+      .lean();
     if (!doc) return null;
-    return doc.details.map(d => d.marked); // ["A", "B", "C"]
+    return doc.details.map((d) => d.marked); // ["A", "B", "C"]
   }
 }

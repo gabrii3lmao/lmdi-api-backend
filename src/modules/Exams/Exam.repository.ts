@@ -9,7 +9,7 @@ export class ExamRepository {
     examId: string,
     updateData: Partial<IExam>,
   ): Promise<IExam | null> {
-    return await Exam.findByIdAndUpdate(examId, updateData, { new: true });
+    return await Exam.findByIdAndUpdate(examId, updateData, { returnDocument: "after" });
   }
 
   async delete(examId: string): Promise<void> {
