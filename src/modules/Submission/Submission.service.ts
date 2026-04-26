@@ -19,15 +19,19 @@ export class SubmissionService {
     if (!exam) {
       throw new Error("EXAM_NOT_FOUND");
     }
+    console.log("passou por aqui");
+    const processedFilePaths = files.map((f) => {
+      return f.path.replace("/upload/", "/upload/e_grayscale,e_contrast:100/");
+    });
 
     const filePaths = files.map((f) => f.path);
     const pendingSubmissions = await Promise.all(
-      files.map((file) =>
+      files.map((file, index) =>
         this._submissionRepo.create({
           examId,
           classId: exam.classId,
           studentName: file.originalname.split(".")[0], // Tira o ".jpg" / ".pdf" do nome
-          imageUrl: file.path,
+          imageUrl: processedFilePaths[index],
           status: "pending",
         }),
       ),
@@ -80,6 +84,6 @@ export class SubmissionService {
   }
 
   async getSubmissionaAnswers(submissionId: string) {
-    return await this._submissionRepo.getSubmissionsAnswersById(submissionId)
+    return await this._submissionRepo.getSubmissionsAnswersById(submissionId);
   }
 }
