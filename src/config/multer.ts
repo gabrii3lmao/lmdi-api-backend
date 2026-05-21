@@ -28,3 +28,12 @@ export const upload = multer({
     fileSize: 5 * 1024 * 1024, // Limite de 5MB
   },
 });
+
+export const deleteImage = async (publicId: string): Promise<void> => {
+  try {
+    await cloudinary.uploader.destroy(publicId);
+  } catch (error) {
+    console.error("Erro ao deletar imagem do Cloudinary:", error);
+    throw new Error("Failed to delete image from Cloudinary");
+  }
+}
