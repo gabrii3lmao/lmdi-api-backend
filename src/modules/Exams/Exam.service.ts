@@ -62,7 +62,16 @@ export class ExamService {
     await this._examRepository.delete(examId);
   }
 
-  async getExamsByClass(classId: string): Promise<IExam[]> {
+  async getExamsByClass(classId: string, teacherId: string): Promise<IExam[]> {
+    const classExist = await this._classRepository.findById(classId);
+
+    if(!classExist) {
+      throw new HttpException("Classe não encontrada", 404);
+    }
+
+    if(classExist.teacherId.toString() !== teacherId) {
+      throw new HttpException("Não autorizado", 403);
+    }
     return await this._examRepository.findByClassId(classId);
   }
 

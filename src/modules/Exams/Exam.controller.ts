@@ -64,7 +64,10 @@ export class ExamController {
 
       const { examId } = req.params;
 
-      await this._examService.deleteCascadeByExamId(examId as string, teacherId);
+      await this._examService.deleteCascadeByExamId(
+        examId as string,
+        teacherId,
+      );
 
       await this._examService.deleteExam(examId as string, teacherId);
 
@@ -79,8 +82,16 @@ export class ExamController {
   listByClass = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { classId } = req.params;
+      const teacherId = req.user?.id;
 
-      const exams = await this._examService.getExamsByClass(classId as string);
+      if (!teacherId) {
+        throw new HttpException("Não autenticado", 401);
+      }
+
+      const exams = await this._examService.getExamsByClass(
+        classId as string,
+        teacherId,
+      );
 
       return res.status(200).json(exams);
     } catch (error) {
