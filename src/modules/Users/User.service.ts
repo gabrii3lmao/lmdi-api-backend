@@ -142,13 +142,15 @@ export class UserService {
     let user = await this._userRepository.findByEmail(email);
 
     if (!user) {
+      const firstName = name ? name.split(" ")[0] : "Professor";
       user = await this._userRepository.create({
         email,
-        name: name || "Usuário do Google",
+        name: firstName,
         password: crypto.randomBytes(20).toString("hex"), // Senha aleatória para usuários do Google
       });
     }
 
+    const nameToReturn = user.name.split(" ")[0] || "Professor";
     const { accessToken, refreshToken } = generateToken({
       id: user._id,
       email: user.email,
@@ -164,7 +166,7 @@ export class UserService {
       refreshToken,
       user: {
         id: user._id,
-        name: user.name,
+        name: nameToReturn,
         email: user.email,
       },
     };
