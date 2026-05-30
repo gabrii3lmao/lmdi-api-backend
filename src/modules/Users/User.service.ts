@@ -1,9 +1,10 @@
-import generateToken from "../../config/jwtService.js";
+import generateToken, { verifyRefreshToken } from "../../config/jwtService.js";
 import type { LoginUserType, RegisterUserType } from "./dto/userTypes.js";
 import { UserRepository } from "./User.repository.js";
 import crypto from "crypto";
 import { EmailService } from "./Email.service.js";
 import { emaillQueue } from "./Email.queue.js";
+import { HttpException } from "../../config/errorHandler.js";
 
 export class UserService {
   constructor(
@@ -15,7 +16,7 @@ export class UserService {
     const existingUser = await this._userRepository.findByEmail(userData.email);
 
     if (existingUser) {
-      throw new Error("Email already in use");
+      throw new HttpException("Email already in use", 400);
     }
 
     return await this._userRepository.create(userData);
@@ -25,22 +26,30 @@ export class UserService {
     const user = await this._userRepository.findByEmail(userData.email);
 
     if (!user) {
-      throw new Error("Invalid credentials");
+      throw new HttpException("Invalid credentials", 401);
     }
 
     const isPasswordValid = await user.isValidPassword(userData.password);
 
     if (!isPasswordValid) {
-      throw new Error("Invalid password");
+      throw new HttpException("Invalid credentials", 401);
     }
 
-    const token = generateToken({
+    const { accessToken, refreshToken } = generateToken({
       id: user._id,
       email: user.email,
     });
 
+    user.refreshToken = refreshToken;
+
+    await this._userRepository.updateRefreshToken(
+      user._id.toString(),
+      refreshToken,
+    );
+
     return {
-      token,
+      accessToken,
+      refreshToken,
       user: {
         id: user._id,
         name: user.name,
@@ -52,7 +61,7 @@ export class UserService {
   async forgotPassword(email: string) {
     const user = await this._userRepository.findByEmail(email);
     if (!user) {
-      throw new Error("Email not found");
+      throw new HttpException("Email not found", 404);
     }
 
     const token = crypto.randomBytes(20).toString("hex");
@@ -83,9 +92,27 @@ export class UserService {
     );
 
     if (!user) {
-      throw new Error("Invalid or expired token");
+      throw new HttpException("Invalid or expired token", 400);
     }
 
     return user;
+  }
+
+  async refreshAccessToken(incomingToken: string) {
+    const decoded = verifyRefreshToken(incomingToken) as { id: string; email: string };
+    const user = await this._userRepository.findById(decoded.id);
+
+    if (!user || user.refreshToken !== incomingToken) {
+      throw new HttpException("Invalid refresh token", 401);
+    }
+
+    const { accessToken, refreshToken } = generateToken({
+      id: user._id,
+      email: user.email,
+    });
+
+    await this._userRepository.updateRefreshToken(user._id.toString(), refreshToken);
+
+    return { accessToken, refreshToken };
   }
 }

@@ -35,4 +35,16 @@ export class UserRepository {
     await user.save();
     return user;
   }
+
+  async findById(id: string): Promise<IUser | null> {
+    return await User.findById(id);
+  }
+
+  async updateRefreshToken(userId: string, token: string | null) {
+    return await User.findByIdAndUpdate(
+      userId,
+      { refreshToken: token },
+      { returnDocument: "after" },
+    );
+  }
 }
