@@ -150,7 +150,6 @@ export class UserService {
       });
     }
 
-    const nameToReturn = user.name.split(" ")[0] || "Professor";
     const { accessToken, refreshToken } = generateToken({
       id: user._id,
       email: user.email,
@@ -166,7 +165,7 @@ export class UserService {
       refreshToken,
       user: {
         id: user._id,
-        name: nameToReturn,
+        name: user.name,
         email: user.email,
       },
     };
